@@ -14,6 +14,16 @@ pipeline {
                         '''
                     }
                 }
-		    }
+	    }
+	   stage('Push Image') {
+                steps {
+                    withCredentials(bindings: [[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bansaripatel', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
+                        sh '''
+                        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                        docker push bansaripatel/capstoneproj_devops
+                        '''
+                    }
+            	}
+            }
         }
 }
