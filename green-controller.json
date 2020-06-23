@@ -26,7 +26,8 @@
                   "ports":[
                      {
                         "name":"http-server",
-                        "containerPort":80
+                        "containerPort":80,
+                        "imagePullPolicy: Always"
                      }
                   ]
                }
