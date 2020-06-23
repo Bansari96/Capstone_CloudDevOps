@@ -34,5 +34,41 @@ pipeline {
                     }
                 }
             }
-        }
+	    stage ('Deploying blue container'){
+                steps{
+                    withAWS(region: 'us-east-2', credentials: 'bansariAWS') {
+                        sh '''
+				kubectl apply -f ./blue-controller.json
+			''' 
+                    }
+                }
+            }
+            stage ('Deploying green container'){
+                steps{
+                    withAWS(region: 'us-east-2', credentials: 'bansariAWS') {
+                        sh '''
+				kubectl apply -f ./green-controller.json
+			''' 
+                    }
+                }
+            }
+            stage ('Running blue service'){
+                steps{
+                    withAWS(region: 'us-east-2', credentials: 'bansariAWS') {
+                        sh '''
+				kubectl apply -f ./blue-service.json
+			''' 
+                    }
+                }
+            }
+            stage ('Running green service'){
+                steps{
+                    withAWS(region: 'us-west-2', credentials: 'capstone') {
+                        sh '''
+				kubectl apply -f ./green-service.json
+			''' 
+                    }
+                }
+             }		  
+    }
 }
