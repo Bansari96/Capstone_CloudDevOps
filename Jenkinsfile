@@ -10,7 +10,7 @@ pipeline {
 		steps {
 		    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bansaripatel', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 			sh '''
-			    docker build -t bansaripatel/capstoneproj_devops:latest .
+			    docker build -t bansaripatel/capstoneproj:latest .
 			'''
 		    }
 		}
@@ -20,7 +20,7 @@ pipeline {
 			withCredentials(bindings: [[$class: 'UsernamePasswordMultiBinding', credentialsId: 'bansaripatel', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]) {
 				sh '''
 					docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-					docker push bansaripatel/capstoneproj_devops:latest
+					docker push bansaripatel/capstoneproj:latest
 				'''
 			}
 			}
@@ -29,8 +29,8 @@ pipeline {
                         steps {
                         withAWS(region: 'us-east-2', credentials: 'bansariAWS') {
                                 sh '''
-					aws eks update-kubeconfig --name cluster-capstone
-                                        kubectl config use-context arn:aws:eks:us-east-2:627208585904:cluster/cluster-capstone
+					aws eks update-kubeconfig --name capstonecluster
+                                        kubectl config use-context arn:aws:eks:us-east-2:627208585904:cluster/capstonecluster
                                 '''
                         }
                         }
